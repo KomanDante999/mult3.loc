@@ -11,7 +11,7 @@ define('HTTPS_CATALOG', 'http://mult3.loc/');
 define('DIR_APPLICATION', 'C:/OSPanel/domains/mult3.loc/admin/');
 define('DIR_SYSTEM', 'C:/OSPanel/domains/mult3.loc/system/');
 define('DIR_IMAGE', 'C:/OSPanel/domains/mult3.loc/image/');
-define('DIR_STORAGE', DIR_SYSTEM . 'storage/');
+define('DIR_STORAGE', 'C:/tempos/mult3/storage/');
 define('DIR_CATALOG', 'C:/OSPanel/domains/mult3.loc/catalog/');
 define('DIR_LANGUAGE', DIR_APPLICATION . 'language/');
 define('DIR_TEMPLATE', DIR_APPLICATION . 'view/template/');
