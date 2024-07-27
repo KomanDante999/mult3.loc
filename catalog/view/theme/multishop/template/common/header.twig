@@ -13,12 +13,6 @@
 			<meta name="keywords" content="{{ keywords }}"/>
 		{% endif %}
 
-		{% for style in styles %}
-			<link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}"/>
-		{% endfor %}
-		{% for script in scripts %}
-			<script src="catalog/view/theme/multishop/assets/{{ script }}" type="text/javascript"></script>
-		{% endfor %}
 		<!-- Google Web Fonts -->
 		<link rel="preconnect" href="https://fonts.gstatic.com">
 		<link
@@ -29,8 +23,15 @@
 
 		<!-- Libraries Stylesheet -->
 		<link href="catalog/view/theme/multishop/assets/lib/animate/animate.min.css" rel="stylesheet">
-		<link
-		href="catalog/view/theme/multishop/assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+		<link href="catalog/view/theme/multishop/assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+		{% for style in styles %}
+			<link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}"/>
+		{% endfor %}
+		{% for script in scripts %}
+			<script src="catalog/view/theme/multishop/assets/{{ script }}" type="text/javascript"></script>
+		{% endfor %}
+
 		<!-- Customized Bootstrap Stylesheet -->
 		<link href="catalog/view/theme/multishop/assets/css/style.css" rel="stylesheet">
 
@@ -41,6 +42,7 @@
 			{{ analytic }}
 		{% endfor %}
 	</head>
+
 	<body>
 		<!-- Topbar Start -->
 		<div class="container-fluid">
