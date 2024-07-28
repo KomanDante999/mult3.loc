@@ -1,6 +1,8 @@
 <?php
-class ControllerExtensionModuleCategory extends Controller {
-	public function index() {
+class ControllerExtensionModuleCategory extends Controller
+{
+	public function index()
+	{
 		$this->load->language('extension/module/category');
 
 		if (isset($this->request->get['path'])) {
@@ -35,13 +37,14 @@ class ControllerExtensionModuleCategory extends Controller {
 			if ($category['category_id'] == $data['category_id']) {
 				$children = $this->model_catalog_category->getCategories($category['category_id']);
 
-				foreach($children as $child) {
+				foreach ($children as $child) {
 					$filter_data = array('filter_category_id' => $child['category_id'], 'filter_sub_category' => true);
+
 
 					$children_data[] = array(
 						'category_id' => $child['category_id'],
 						'name' => $child['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
-						'href' => $this->url->link('product/category', 'path=' . $category['category_id'] . '_' . $child['category_id'])
+						'href' => $this->url->link('product/category', 'path=' . $category['category_id'] . '_' . $child['category_id']),
 					);
 				}
 			}
@@ -51,11 +54,23 @@ class ControllerExtensionModuleCategory extends Controller {
 				'filter_sub_category' => true
 			);
 
+			// my_code_edits
+			if ($category['image']) {
+				$image = $this->model_tool_image->resize($category['image'], 150, 150);
+			} else {
+				$image = $this->model_tool_image->resize('placeholder.png', 150, 150);
+			}
+			// my_code_edits
+
 			$data['categories'][] = array(
 				'category_id' => $category['category_id'],
 				'name'        => $category['name'] . ($this->config->get('config_product_count') ? ' (' . $this->model_catalog_product->getTotalProducts($filter_data) . ')' : ''),
 				'children'    => $children_data,
-				'href'        => $this->url->link('product/category', 'path=' . $category['category_id'])
+				'href'        => $this->url->link('product/category', 'path=' . $category['category_id']),
+				// my_code_edits
+				'image' => $image,
+				'product_total' => $this->model_catalog_product->getTotalProducts($filter_data),
+				// my_code_edits
 			);
 		}
 
