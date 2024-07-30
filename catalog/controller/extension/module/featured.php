@@ -78,6 +78,8 @@ class ControllerExtensionModuleFeatured extends Controller
 			}
 		}
 
+		$data['title'] = $this->language->get("{$setting['name']}_title");
+
 		if ($data['products']) {
 			return $this->load->view('extension/module/featured', $data);
 		}
