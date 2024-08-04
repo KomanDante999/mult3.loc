@@ -62,17 +62,17 @@
 							<p class="text-center">{{ text_empty }}</p>
 						</li>
 					{% endif %}
+					<li>
+						{% for total in totals %}
+							<div class="cart-modal__total">
+								<p class="text-right mr-4">
+									<strong>{{ total.title }}</strong>
+								</p>
+								<p class="text-right mr-4">{{ total.text }}</p>
+							</div>
+						{% endfor %}
+					</li>
 				</ul>
-				<div>
-					{% for total in totals %}
-						<div class="cart-modal__total">
-							<p class="text-right mr-4">
-								<strong>{{ total.title }}</strong>
-							</p>
-							<p class="text-right mr-4">{{ total.text }}</p>
-						</div>
-					{% endfor %}
-				</div>
 			</div>
 			<div class="modal-footer">
 				<a href="{{ cart }}" class="btn btn-secondary" data-dismiss="modal">{{ text_cart }}</a>
