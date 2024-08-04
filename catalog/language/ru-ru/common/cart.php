@@ -1,6 +1,9 @@
 <?php
 // Text
-$_['text_items']                 = 'Товаров %s (%s)';
+// $_['text_items']                 = 'Товаров %s (%s)';
+$_['text_items']                 = '%s';
+$_['text_title']     = 'Корзина';
+$_['text_empty']     = 'Ваша корзина пуста!';
 $_['text_points']                = 'Бонусные баллы';
 $_['text_subscription']          = 'Подписка';
 $_['text_subscription_trial']    = '%s каждый %d %s(й) для %d платежа(й) затем';

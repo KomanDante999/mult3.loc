@@ -1,0 +1,84 @@
+<button class="btn px-1 ml-3" type="button" data-toggle="modal" data-target="#modalCart">
+	<i class="fas fa-shopping-cart text-primary mr-1"></i>
+	<span id="cartInfo" class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">{{ text_items }}</span>
+</button>
+
+<!-- Modal cart start-->
+<div class="modal fade" id="modalCart" tabindex="-1" aria-labelledby="modalCartLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">{{ text_title }}</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div id="modalCartBody" class="modal-body cart-modal">
+				<ul id="cartList" class="cart-modal__list">
+					{% if products %}
+						{% for product in products %}
+							<li class="cart-modal__item">
+								<a class="cart-modal__img-link" href="{{ product.href }}" style="background-image: url({{ product.thumb }});"></a>
+								<a class="cart-modal__name-link" href="{{ product.href }}">
+									<p class="cart-modal__name">{{ product.name }}</p>
+								</a>
+								<div>
+									{% if product.option %}
+										{% for option in product.option %}
+											<br/>
+											-
+											<small>{{ option.name }}
+												{{ option.value }}</small>
+										{% endfor %}
+									{% endif %}
+								</div>
+								<div>
+									{% if product.recurring %}
+										<br/>
+										-
+										<small>{{ text_recurring }}
+											{{ product.recurring }}</small>
+									{% endif %}
+								</div>
+								<div class="cart-modal__coll">
+									<p class="d-block w-100 text-end fs-6">{{ product.price }}</p>
+								</div>
+								<div class="cart-modal__coll">
+									<p class="d-block w-100 text-end">x
+										{{ product.quantity }}</p>
+								</div>
+								<div class="cart-modal__coll">
+									<p class="cart-modal__total d-block w-100 text-end">{{ product.total }}</p>
+								</div>
+								<div class="cart-modal__coll">
+									<button class="btn btn-danger btn-xs" type="button" onclick="cart.remove('{{ product.cart_id }}');" title="{{ button_remove }}">
+										<i class="fa fa-times"></i>
+									</button>
+								</div>
+							</li>
+						{% endfor %}
+					{% else %}
+						<li>
+							<p class="text-center">{{ text_empty }}</p>
+						</li>
+					{% endif %}
+				</ul>
+				<div>
+					{% for total in totals %}
+						<div class="cart-modal__total">
+							<p class="text-right mr-4">
+								<strong>{{ total.title }}</strong>
+							</p>
+							<p class="text-right mr-4">{{ total.text }}</p>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="modal-footer">
+				<a href="{{ cart }}" class="btn btn-secondary" data-dismiss="modal">{{ text_cart }}</a>
+				<a href="{{ checkout }}" class="btn btn-primary">{{ text_checkout }}</a>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Modal cart end-->

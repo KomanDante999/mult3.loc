@@ -29,19 +29,18 @@
 					<div class="text-center py-4">
 						<a class="h6 text-decoration-none text-truncate" href="{{ product.href }}">{{ product.name }}</a>
 						{% if product.special %}
-							<div
-								class="d-flex align-items-center justify-content-center mt-2">
-								{# <h5>{{ product.special }}</h5> #}
+							<div class="d-flex align-items-center justify-content-center mt-2">
+								<h5>{{ product.special }}</h5>
 								{% if product.price %}
-									<h6
-										class="text-muted ml-2">{# <del>{{ product.price }}</del> #}
+									<h6 class="text-muted ml-2">
+										<del>{{ product.price }}</del>
 									</h6>
 								{% endif %}
 							</div>
 						{% else %}
 							{% if product.price %}
-								<div
-									class="d-flex align-items-center justify-content-center mt-2">{# <h5>{{ product.price }}</h5> #}
+								<div class="d-flex align-items-center justify-content-center mt-2">
+									<h5>{{ product.price }}</h5>
 								</div>
 							{% endif %}
 						{% endif %}
