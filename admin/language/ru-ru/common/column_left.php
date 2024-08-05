@@ -80,5 +80,6 @@ $_['text_zone']                 = 'Регионы';
 $_['text_complete_status']      = 'Заказы завершенные';
 $_['text_processing_status']    = 'Заказы в процессе';
 $_['text_other_status']         = 'Остальные заказы';
-
-
+//TODO:
+$_['text_stmenu']          = 'СТ меню';
+// my_code_edits ctmenu

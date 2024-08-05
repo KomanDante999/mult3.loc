@@ -1,6 +1,8 @@
 <?php
-class ControllerCommonColumnLeft extends Controller {
-	public function index() {
+class ControllerCommonColumnLeft extends Controller
+{
+	public function index()
+	{
 		if (isset($this->request->get['user_token']) && isset($this->session->data['user_token']) && ($this->request->get['user_token'] == $this->session->data['user_token'])) {
 			$this->load->language('common/column_left');
 
@@ -117,6 +119,15 @@ class ControllerCommonColumnLeft extends Controller {
 					'children' => array()
 				);
 			}
+			//TODO:
+			if ($this->user->hasPermission('access', 'extension/ctmenu')) {
+				$catalog[] = array(
+					'name'	   => $this->language->get('text_ctmenu'),
+					'href'     => $this->url->link('extension/ctmenu', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+			// my_code_edits ctmenu
 
 			if ($catalog) {
 				$data['menus'][] = array(
