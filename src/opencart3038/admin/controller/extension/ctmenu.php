@@ -58,7 +58,8 @@ class ControllerExtensionCtmenu extends Controller
             $data['ctmenu'][] = [
                 'id' => $menu_item['id'],
                 'title' => $menu_item['title'],
-                'edit' => $this->url->link('extension/ctmenu/edit-menu', "user_token={$this->session->data['user_token']}&menu_id={$menu_item['id']}", true),
+                'edit' => $this->url->link('extension/ctmenu/edit-menu', 
+								"user_token={$this->session->data['user_token']}&menu_id={$menu_item['id']}", true),
                 'delete' => $this->url->link('extension/ctmenu/delete-menu', "user_token={$this->session->data['user_token']}&menu_id={$menu_item['id']}", true),
                 'view_menu_links' => $this->url->link('extension/ctmenu/view-menu-links', "user_token={$this->session->data['user_token']}&menu_id={$menu_item['id']}", true),
             ];
