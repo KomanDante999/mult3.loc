@@ -1,5 +1,5 @@
-<!-- TODO: -->
 <?php
+// TODO:
 class ControllerExtensionCtmenu extends Controller
 {
 	private $error = array();
@@ -55,8 +55,14 @@ class ControllerExtensionCtmenu extends Controller
 				'id' => $menu_item['id'],
 				'title' => $menu_item['title'],
 				'edit' => $this->url->link('extension/ctmenu/edit-menu', "user_token={$this->session->data['user_token']}&menu_id={$menu_item['id']}", true),
-
+				'delete' => $this->url->link('extension/ctmenu/delete-menu', "user_token={$this->session->data['user_token']}&menu_id={$menu_item['id']}", true),
+				'view_menu_links' => $this->url->link('extension/ctmenu/view-menu-links', "user_token={$this->session->data['user_token']}&menu_id={$menu_item['id']}", true),
 			];
 		}
+
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
+		$this->response->setOutput($this->load->view('extension/ctmenu/index', $data));
 	}
 }

@@ -1,6 +1,5 @@
-//TODO:
 <?php
-
+//TODO:
 class ModelExtensionCtmenu extends Model
 {
 	public function install()
