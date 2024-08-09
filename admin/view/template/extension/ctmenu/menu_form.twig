@@ -19,7 +19,7 @@
 			</ul>
 		</div>
 	</div>
-	<div class="container-fluid">
+	<div class="conteiner-fluid">
 		{% if error_warning %}
 			<div class="alert alert-danger alert-dismissible">
 				<i class="fa fa-exclamation-circle"></i>
@@ -39,14 +39,13 @@
 			<div class="panel-heading">
 				<h3 class="panel-title">
 					<i class="fa fa-list"></i>
-					{{ text_edit }}</h3>
+					{{ text_edit }}
+				</h3>
 			</div>
 			<div class="panel-body">
-
 				<form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-information" class="form-horizontal">
-
 					<div class="form-group required">
-						<label class="col-sm-2 control-label" for="input-title">{{ entry_title }}</label>
+						<lable class="col-sm-2 control-label" for="input-title">{{ entry_title }}</lable>
 						<div class="col-sm-10">
 							<input type="text" name="ctmenu[title]" placeholder="{{ entry_title }}" id="input-title" class="form-control" value="{{ ctmenu_data ? ctmenu_data.title }}" required>
 							{% if error_title %}
@@ -54,13 +53,9 @@
 							{% endif %}
 						</div>
 					</div>
-
-
 				</form>
-
 			</div>
 		</div>
-
 	</div>
 </div>
 {{ footer }}

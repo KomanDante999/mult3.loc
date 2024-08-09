@@ -148,7 +148,7 @@ class ControllerExtensionCtmenu extends Controller
 
 		if (isset($this->request->get['menu_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
 			$data['ctmenu_data'] = $this->model_extension_ctmenu->getMenu($this->request->get['menu_id']);
-		} else {
+		} elseif (isset($this->request->post['ctmenu'])) {
 			$data['ctmenu_data'] = $this->request->post['ctmenu'];
 		}
 
@@ -161,12 +161,35 @@ class ControllerExtensionCtmenu extends Controller
 		if (isset($this->request->get['menu_id']) && $this->validateDelete()) {
 			$this->load->model('extension/ctmenu');
 			$this->load->language('extension/ctmenu');
-			if ($this-> ) {
-				# code...
+			if ($this-> model_extension_ctmenu->deleteMenu($this->request->get['menu_id'])) {
+				$this->session->data['success'] = $this->language-get('error_delete_menu');
 			} else {
-				# code...
+				$this->response->redirect($this->url->link('extension/ctmenu', "user_token={$this->session->data['user_token']}", true));
 			}
-			
 		}
+		$this->index();
+	}
+
+	protected function validateMenuForm() 
+	{
+		if (!$this->user->hasPermission('modify', 'extension/ctmenu')) {
+			$this->error['warning'] = $this->language->get('error_permission');
+		}
+		
+		$title = trim($this->request->post['ctmenu']['title']);
+		if ((utf8_strlen($title) < 1) || (utf8_strlen($title) > 255)) {
+			$this->error['title'] = $this->language->get('error_warning');
+		}
+
+		return !$this->error;
+	}
+	
+	protected function validateDelete() 
+	{
+		if (!$this->user->hasPermission('modify', 'extension/ctmenu')) {
+			$this->error['warning'] = $this->language->get('error_permission');
+		}
+		
+		return !$this->error;
 	}
 }
