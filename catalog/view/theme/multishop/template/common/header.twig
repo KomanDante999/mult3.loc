@@ -28,6 +28,7 @@
 		{% for style in styles %}
 			<link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}"/>
 		{% endfor %}
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 		{% for script in scripts %}
 			<script src="catalog/view/theme/multishop/assets/{{ script }}" type="text/javascript"></script>
 		{% endfor %}
@@ -58,11 +59,33 @@
 				<div class="col-lg-6 text-center text-lg-right">
 					<div class="d-inline-flex align-items-center">
 						<div class="btn-group">
-							<button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">My Account</button>
-							<div class="dropdown-menu dropdown-menu-right">
-								<button class="dropdown-item" type="button">Sign in</button>
-								<button class="dropdown-item" type="button">Sign up</button>
-							</div>
+							<button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">{{ text_account }}</button>
+							<ul class="dropdown-menu dropdown-menu-right">
+								{% if logger %}
+									<li>
+										<a href="{{ account }}" class="dropdown-item">{{ text_account }}</a>
+									</li>
+									<li>
+										<a href="{{ order }}" class="dropdown-item">{{ text_order }}</a>
+									</li>
+									<li>
+										<a href="{{ transaction }}" class="dropdown-item">{{ text_transaction }}</a>
+									</li>
+									<li>
+										<a href="{{ download }}" class="dropdown-item">{{ text_download }}</a>
+									</li>
+									<li>
+										<a href="{{ logout }}" class="dropdown-item">{{ text_logout }}</a>
+									</li>
+								{% else %}
+									<li>
+										<a href="{{ register }}" class="dropdown-item">{{ text_register }}</a>
+									</li>
+									<li>
+										<a href="{{ login }}" class="dropdown-item">{{ text_login }}</a>
+									</li>
+								{% endif %}
+							</ul>
 						</div>
 						{{ currency }}
 						{{ language }}

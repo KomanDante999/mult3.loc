@@ -24,7 +24,7 @@ class ControllerExtensionModuleCatonhome extends Controller
 		}
 
 		$this->load->model('catalog/category');
-
+		$this->load->model('tool/image');
 		$this->load->model('catalog/product');
 
 		$data['categories'] = array();
