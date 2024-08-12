@@ -217,10 +217,43 @@ class ControllerExtensionCtmenu extends Controller
 		$menu_tree = $this->model_extension_ctmenu->getMapTree($menu_data);
 		$data['ctmenu'] = $this->treeToHtml($menu_tree);
 
+		echo '<pre>';
+		print_r($menu_tree);
+		echo '</pre>';
+
+
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
 		$this->response->setOutput($this->load->view('extension/ctmenu/menu_view_links', $data));
+	}
+	//  add  menu links
+	public function addMenuLink()
+	{
+		$this->load->language('extension/ctmenu');
+		$this->document->setTitle($this->language->get('heading_title'));
+		$this->load->model('extension/ctmenu');
+
+		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateMenuLinkForm()) {
+			// save form
+			$this->model_extension_ctmenu->addMenuLink($this->request->get['menu_id'], $this->request->post);
+			$this->session->data['success'] = $this->language->get('text_success');
+			// $this->cache->delete('ctmenu');
+			$this->response->redirect($this->url->link('extension/ctmenu/view-menu-links', "user_token={$this->session->data['user_token']}&menu_id={$this->request->get['menu_id']}", true));
+		}
+
+		$this->getMenuLinkForm();
+	}
+
+	protected function getMenuLinkForm()
+	{
+		$data['text_form'] = !isset($this->request->get['menu_link_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
+
+		if (isset($this->error['warning'])) {
+			$data['error_warning'] = $this->error['warning'];
+		} else {
+			$data['error_warning'] = '';
+		}
 	}
 
 	private function treeToHtml($tree, $tpl = 'list', $tab = '', $parent_id = 0)
@@ -240,7 +273,7 @@ class ControllerExtensionCtmenu extends Controller
 			$delete_link = $this->url->link('extension/ctmenu/delete-menu-link', "user_token={$this->session->data['user_token']}&menu_link_id={$item['id']}", true);
 			$delete = '<a href="' . $delete_link . '" class="delete btn btn-danger"><i class="fa fa-trash-o"></i></a>';
 		}
-		$edit = $this->utl->link('extension/ctmenu/edit-menu-link', "user_token={$this->session->data['user_token']}&menu_link_id={$item['id']}", true);
+		$edit = $this->url->link('extension/ctmenu/edit-menu-link', "user_token={$this->session->data['user_token']}&menu_link_id={$item['id']}", true);
 ?>
 
 		<?php if ($tpl == 'list') : ?>
@@ -250,6 +283,7 @@ class ControllerExtensionCtmenu extends Controller
 					<span><?= $delete; ?></span>
 				<?php endif ?>
 			</p>
+
 			<?php if (isset($item['children'])) : ?>
 				<div class="list-group">
 					<?= $this->treeToHtml($item['children']); ?>
@@ -261,7 +295,7 @@ class ControllerExtensionCtmenu extends Controller
 			<option value="<?= $item['id']; ?>" <?php if ($item['id'] == $parent_id) echo 'selected'; ?> <?php if (isset($_GET['menu_link_id']) && $item['id'] == $_GET['menu_link_id']) echo ' disabled'; ?>>
 				<?= $tab . $item['title']; ?>
 			</option>
-			<?php if (isset($otem['children'])) : ?>
+			<?php if (isset($item['children'])) : ?>
 				<?= $this->treeToHtml($item['children'], 'select', '&nbsp;' . $tab . '-', $parent_id); ?>
 			<?php endif ?>
 		<?php endif ?>

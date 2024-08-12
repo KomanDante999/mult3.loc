@@ -38,21 +38,25 @@ class ModelExtensionCtmenu extends Model
 		return $query->rows;
 	}
 
-	public function getMenu($menu_id) {
+	public function getMenu($menu_id)
+	{
 		$query = $this->db->query("SELECT * FROM ctmenu WHERE id = " . (int)$menu_id);
 		return $query->row;
 	}
 
-	public function addMenu($data) {
+	public function addMenu($data)
+	{
 		$this->db->query("INSERT INTO `ctmenu` SET `title` = '" . $this->db->escape($data['title']) . "' ");
 		return $this->db->getLastId();
 	}
-	
-	public function editMenu($menu_id, $data) {
+
+	public function editMenu($menu_id, $data)
+	{
 		$this->db->query("UPDATE `ctmenu` SET title = '" . $this->db->escape($data['title']) . "' WHERE id = " . (int)$menu_id);
 	}
-	
-	public function deleteMenu($menu_id) {
+
+	public function deleteMenu($menu_id)
+	{
 		$query = $this->db->query("SELECT COUNT(*) AS cnt FROM `ctmenu_link` WHERE menu_id = " . (int)$menu_id);
 		if (!$query->row['cnt']) {
 			$query = $this->db->query("DELETE FROM `ctmenu` WHERE id = " . (int)$menu_id);
@@ -61,7 +65,8 @@ class ModelExtensionCtmenu extends Model
 		return false;
 	}
 
-	public function getTreeItems($menu_id){
+	public function getTreeItems($menu_id)
+	{
 		$menu_id = (int)$menu_id;
 		$language_id = (int)$this->config->get('config_language_id');
 		$query = $this->db->query("SELECT m.id, m.parent_id, md.title, md.link 
@@ -76,7 +81,8 @@ class ModelExtensionCtmenu extends Model
 		return $menu;
 	}
 
-	public function getMapTree($dataset) {
+	public function getMapTree($dataset)
+	{
 		$tree = [];
 		foreach ($dataset as $id => &$node) {
 			if (!$node['parent_id']) {
@@ -84,10 +90,7 @@ class ModelExtensionCtmenu extends Model
 			} else {
 				$dataset[$node['parent_id']]['children'][$id] = &$node;
 			}
-			return $tree;
 		}
+		return $tree;
 	}
 }
-
-
-
