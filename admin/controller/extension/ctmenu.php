@@ -254,6 +254,74 @@ class ControllerExtensionCtmenu extends Controller
 		} else {
 			$data['error_warning'] = '';
 		}
+
+		// if (isset($this->session->data['success'])) {
+		// 	$data['success'] = $this->session->data['success'];
+		// 	unset($this->session->data['success']);
+		// } else {
+		// 	$data['success'] = '';
+		// }
+
+		if (isset($this->error['title'])) {
+			$data['error_title'] = $this->error['title'];
+		} else {
+			$data['error_title'] = array();
+		}
+
+		if (isset($this->error['link'])) {
+			$data['error_link'] = $this->error['link'];
+		} else {
+			$data['error_link'] = array();
+		}
+
+		// breadcrumbs
+		$data['breadcrumbs'] = array();
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', "user_token={$this->session->data['user_token']}", true)
+		);
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('heading_title'),
+			'href' => $this->url->link('extension/ctmenu', "user_token={$this->session->data['user_token']}", true)
+		);
+
+		if (!isset($this->request->get['menu_link_id'])) {
+			$data['action'] = $this->url->link('extension/ctmenu/add-menu-link', "user_token={$this->session->data['user_token']}&menu_id={$this->request->get['menu_id']}", true);
+		} else {
+			$data['action'] = $this->url->link('extension/ctmenu/edit-menu-link', "user_token={$this->session->data['user_token']}&menu_link_id={$this->request->get['menu_link_id']}", true);
+		}
+
+		$data['languages'] = $this->model_localisation_language->getLanguages();
+
+		$data['header'] = $this->load->controller('common/healer');
+		$data['colum_left'] = $this->load->controller('common/colum_left');
+		$data['footer'] = $this->load->controller('common/footer');
+
+		if (isset($this->request->post['menu_description'])) {
+			$data['menu_description'] = $this->request->post['menu_description'];
+		}
+
+		if (isset($this->request->get['menu_link_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+			$data['menu_description'] = $this->model_extension_ctmenu->getMenuLink($this->request->get['menu_link_id']);
+		} elseif (isset($this->request->post['ctmenu'])) {
+			// post
+			$data['menu_description'] = $this->request->post['menu_description'];
+		}
+
+		if (isset($this->request->get['menu_id'])) {
+			// add
+			$menu_id = $this->request->get['menu_id'];
+			$parent_id = 0;
+			$data['cancel'] = $this->url->link('extension/ctmenu/view-menu-links', "user_token={$this->session->data['user_token']}&menu_id={$this->request->get['menu_id']}", true);
+		} elseif (isset($this->request->get['menu_link_id'])) {
+			// edit
+			$menu_link = $this->model_extension_ctmenu->getMenuLinkByLinkId($this->request->get['menu_link_id']);
+			$menu_id = $menu_link['menu_id'];
+			$parent_id = $menu_link['parent_id'];
+			$data['cancel'] = $this->url->link('extension/ctmenu/view-menu-links', "user_token={$this->session->data['user_token']}&menu_id={$menu_id}", true);
+		} else {
+			$menu_id = 0;
+		}
 	}
 
 	private function treeToHtml($tree, $tpl = 'list', $tab = '', $parent_id = 0)
