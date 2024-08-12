@@ -293,11 +293,11 @@ class ControllerExtensionCtmenu extends Controller
 		return !$this->error;
 	}
 
-	private function dump($data, $die = true)
-	{
-		echo "<pre>" . print_r($data, 1) . "</pre>";
-		if ($die) {
-			die;
-		}
-	}
+	// private function dump($data, $die = true)
+	// {
+	// 	echo "<pre>" . print_r($data, 1) . "</pre>";
+	// 	if ($die) {
+	// 		die;
+	// 	}
+	// }
 }
