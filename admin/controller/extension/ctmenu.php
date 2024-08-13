@@ -217,11 +217,6 @@ class ControllerExtensionCtmenu extends Controller
 		$menu_tree = $this->model_extension_ctmenu->getMapTree($menu_data);
 		$data['ctmenu'] = $this->treeToHtml($menu_tree);
 
-		echo '<pre>';
-		print_r($menu_tree);
-		echo '</pre>';
-
-
 		$data['header'] = $this->load->controller('common/header');
 		$data['column_left'] = $this->load->controller('common/column_left');
 		$data['footer'] = $this->load->controller('common/footer');
@@ -322,6 +317,12 @@ class ControllerExtensionCtmenu extends Controller
 		} else {
 			$menu_id = 0;
 		}
+
+		$menu_data = $this->model_extension_ctmenu->getTreeItems($menu_id);
+		$menu_tree = $this->model_extension_ctmenu->getMapTree($menu_data);
+		$data['ctmenu_select'] = $this->treeToHtml($menu_tree, 'select', '', $parent_id);
+
+		$this->response->setOutput($this->load->view('extension/ctmenu/menu_link_form', $data));
 	}
 
 	private function treeToHtml($tree, $tpl = 'list', $tab = '', $parent_id = 0)
@@ -385,6 +386,28 @@ class ControllerExtensionCtmenu extends Controller
 
 		return !$this->error;
 	}
+	
+	protected function validateMenuLinkForm()
+	{
+		if (!$this->user->hasPermission('modify', 'extension/ctmenu')) {
+			$this->error['warning'] = $this->language->get('error_permission');
+		}
+		
+		foreach ($this->request->post['menu_description'] as $language_id => $value) {
+			if ((utf8_strlen($value['title']) < 1) || (utf8_strlen($value['title']) > 255) ) {
+				$this->error['title'][$language_id] = $this->language->get('error_title');
+			}
+			if ((utf8_strlen($value['link']) < 1) || (utf8_strlen($value['link']) > 255) ) {
+				$this->error['link'][$language_id] = $this->language->get('error_link');
+			}
+		}
+		
+		if ($this->error && !isset($this->error['warning']) ) {
+			$this->error['warning'] = $this->language->get('error_warning');
+		}
+
+		return !$this->error;
+	}
 
 	protected function validateDelete()
 	{
@@ -395,11 +418,11 @@ class ControllerExtensionCtmenu extends Controller
 		return !$this->error;
 	}
 
-	// private function dump($data, $die = true)
-	// {
-	// 	echo "<pre>" . print_r($data, 1) . "</pre>";
-	// 	if ($die) {
-	// 		die;
-	// 	}
-	// }
+	private function dump($data, $die = true)
+	{
+		echo "<pre>" . print_r($data, 1) . "</pre>";
+		if ($die) {
+			die;
+		}
+	}
 }
