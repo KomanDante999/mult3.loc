@@ -93,4 +93,28 @@ class ModelExtensionCtmenu extends Model
 		}
 		return $tree;
 	}
+
+	public function addMenuLink($menu_id, $data)
+	{
+		$this->db->query("INSERT INTO ctmenu_link SET menu_id = " . (int)$menu_id . ", parent_id = " . (int)$data['menu_description_parent']);
+		$menu_link_id = $this->db->getLastId();
+		foreach ($data['menu_description'] as $language_id => $value) {
+			$this->db->query("INSERT INTO ctmenu_link_description SET menu_link_id = " . (int)$menu_link_id . ", language_id = " . (int)$language_id . ", title = '" . $this->db->escape($value['link']) . "'");
+		}
+	}
+
+	public function getMenuLink($menu_link_id)
+	{
+		$query = $this->db->query("SELECT mld.*, ml.parent_id FROM ctmenu_link_description mld LEFT JOIN ctmenu_link ml ON mld.menu_link_id = ml.id WHERE ml.id = " . (int)$menu_link_id);
+
+		foreach ($query->rows as $row) {
+			$menu_description_data[$row['language_is']] = [
+				'id' => $row['menu_link_id'],
+				'title' => $row['title'],
+				'link' => $row['link'],
+				'parent_id' => $row['parent_id'],
+			];
+		}
+		return $menu_description_data;
+	}
 }

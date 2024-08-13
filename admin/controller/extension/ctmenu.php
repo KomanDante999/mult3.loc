@@ -286,6 +286,10 @@ class ControllerExtensionCtmenu extends Controller
 			$data['action'] = $this->url->link('extension/ctmenu/edit-menu-link', "user_token={$this->session->data['user_token']}&menu_link_id={$this->request->get['menu_link_id']}", true);
 		}
 
+		$data['user_token'] = $this->session->data['user_token'];
+
+		$this->load->model('localisation/language');
+
 		$data['languages'] = $this->model_localisation_language->getLanguages();
 
 		$data['header'] = $this->load->controller('common/healer');
@@ -386,23 +390,23 @@ class ControllerExtensionCtmenu extends Controller
 
 		return !$this->error;
 	}
-	
+
 	protected function validateMenuLinkForm()
 	{
 		if (!$this->user->hasPermission('modify', 'extension/ctmenu')) {
 			$this->error['warning'] = $this->language->get('error_permission');
 		}
-		
+
 		foreach ($this->request->post['menu_description'] as $language_id => $value) {
-			if ((utf8_strlen($value['title']) < 1) || (utf8_strlen($value['title']) > 255) ) {
+			if ((utf8_strlen($value['title']) < 1) || (utf8_strlen($value['title']) > 255)) {
 				$this->error['title'][$language_id] = $this->language->get('error_title');
 			}
-			if ((utf8_strlen($value['link']) < 1) || (utf8_strlen($value['link']) > 255) ) {
+			if ((utf8_strlen($value['link']) < 1) || (utf8_strlen($value['link']) > 255)) {
 				$this->error['link'][$language_id] = $this->language->get('error_link');
 			}
 		}
-		
-		if ($this->error && !isset($this->error['warning']) ) {
+
+		if ($this->error && !isset($this->error['warning'])) {
 			$this->error['warning'] = $this->language->get('error_warning');
 		}
 
