@@ -240,7 +240,8 @@ class ControllerExtensionCtmenu extends Controller
 		$this->getMenuLinkForm();
 	}
 
-	protected function getMenuLinkForm()
+
+	/* protected function getMenuLinkForm()
 	{
 		$data['text_form'] = !isset($this->request->get['menu_link_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
 
@@ -327,7 +328,97 @@ class ControllerExtensionCtmenu extends Controller
 		$data['ctmenu_select'] = $this->treeToHtml($menu_tree, 'select', '', $parent_id);
 
 		$this->response->setOutput($this->load->view('extension/ctmenu/menu_link_form', $data));
+	} */
+
+	protected function getMenuLinkForm()
+	{
+		$data['text_form'] = !isset($this->request->get['menu_link_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
+
+		if (isset($this->error['warning'])) {
+			$data['error_warning'] = $this->error['warning'];
+		} else {
+			$data['error_warning'] = '';
+		}
+
+		/*if (isset($this->session->data['success'])) {
+            $data['success'] = $this->session->data['success'];
+            unset($this->session->data['success']);
+        } else {
+            $data['success'] = '';
+        }*/
+
+		if (isset($this->error['title'])) {
+			$data['error_title'] = $this->error['title'];
+		} else {
+			$data['error_title'] = array();
+		}
+
+		if (isset($this->error['link'])) {
+			$data['error_link'] = $this->error['link'];
+		} else {
+			$data['error_link'] = array();
+		}
+
+		$data['breadcrumbs'] = array();
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('text_home'),
+			'href' => $this->url->link('common/dashboard', "user_token={$this->session->data['user_token']}", true)
+		);
+		$data['breadcrumbs'][] = array(
+			'text' => $this->language->get('heading_title'),
+			'href' => $this->url->link('extension/ctmenu', "user_token={$this->session->data['user_token']}", true)
+		);
+
+		if (!isset($this->request->get['menu_link_id'])) {
+			$data['action'] = $this->url->link('extension/ctmenu/add-menu-link', "user_token={$this->session->data['user_token']}&menu_id={$this->request->get['menu_id']}", true);
+		} else {
+			$data['action'] = $this->url->link('extension/ctmenu/edit-menu-link', "user_token={$this->session->data['user_token']}&menu_link_id={$this->request->get['menu_link_id']}", true);
+		}
+
+		$data['user_token'] = $this->session->data['user_token'];
+
+		$this->load->model('localisation/language');
+
+		$data['languages'] = $this->model_localisation_language->getLanguages();
+
+		$data['header'] = $this->load->controller('common/header');
+		$data['column_left'] = $this->load->controller('common/column_left');
+		$data['footer'] = $this->load->controller('common/footer');
+
+		if (isset($this->request->post['menu_description'])) {
+			$data['menu_description'] = $this->request->post['menu_description'];
+		}
+
+
+		if (isset($this->request->get['menu_link_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+			$data['menu_description'] = $this->model_extension_ctmenu->getMenuLink($this->request->get['menu_link_id']);
+		} elseif (isset($this->request->post['ctmenu'])) {
+			// post
+			$data['menu_description'] = $this->request->post['menu_description'];
+		}
+
+		if (isset($this->request->get['menu_id'])) {
+			// add
+			$menu_id = $this->request->get['menu_id'];
+			$parent_id = 0;
+			$data['cancel'] = $this->url->link('extension/ctmenu/view-menu-links', "user_token={$this->session->data['user_token']}&menu_id={$this->request->get['menu_id']}", true);
+		} elseif (isset($this->request->get['menu_link_id'])) {
+			// edit
+			$menu_link = $this->model_extension_ctmenu->getMenuLinkByLinkId($this->request->get['menu_link_id']);
+			$menu_id = $menu_link['menu_id'];
+			$parent_id = $menu_link['parent_id'];
+			$data['cancel'] = $this->url->link('extension/ctmenu/view-menu-links', "user_token={$this->session->data['user_token']}&menu_id={$menu_id}", true);
+		} else {
+			$menu_id = 0;
+		}
+
+		$menu_data = $this->model_extension_ctmenu->getTreeItems($menu_id);
+		$menu_tree = $this->model_extension_ctmenu->getMapTree($menu_data);
+		$data['ctmenu_select'] = $this->treeToHtml($menu_tree, 'select', '', $parent_id);
+
+		$this->response->setOutput($this->load->view('extension/ctmenu/menu_link_form', $data));
 	}
+
 
 	private function treeToHtml($tree, $tpl = 'list', $tab = '', $parent_id = 0)
 	{
