@@ -99,7 +99,7 @@ class ModelExtensionCtmenu extends Model
 		$this->db->query("INSERT INTO ctmenu_link SET menu_id = " . (int)$menu_id . ", parent_id = " . (int)$data['menu_description_parent']);
 		$menu_link_id = $this->db->getLastId();
 		foreach ($data['menu_description'] as $language_id => $value) {
-			$this->db->query("INSERT INTO ctmenu_link_description SET menu_link_id = " . (int)$menu_link_id . ", language_id = " . (int)$language_id . ", title = '" . $this->db->escape($value['link']) . "'");
+			$this->db->query("INSERT INTO ctmenu_link_description SET menu_link_id = " . (int)$menu_link_id . ", language_id = " . (int)$language_id . ", title = '" . $this->db->escape($value['title']) . "', link = '" . $this->db->escape($value['link']) . "'");
 		}
 	}
 

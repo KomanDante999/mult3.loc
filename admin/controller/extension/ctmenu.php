@@ -230,6 +230,7 @@ class ControllerExtensionCtmenu extends Controller
 		$this->load->model('extension/ctmenu');
 
 		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateMenuLinkForm()) {
+			// $this->dump($this->request->post);
 			// save form
 			$this->model_extension_ctmenu->addMenuLink($this->request->get['menu_id'], $this->request->post);
 			$this->session->data['success'] = $this->language->get('text_success');
